@@ -18,9 +18,6 @@ int main(int argc, char const *argv[])
     cin >> p >> t;
     a.insert(a.begin() + p, t);
 
-    for (auto i : a) cout << i << ' ';
-    cout << endl;
-
     START_P = p;
     END_P = p;
     VALUE = t;
@@ -28,6 +25,7 @@ int main(int argc, char const *argv[])
 
     while (!STOP_LOOP)
     {
+        if (a.size() - (VALUE - t) == 1) break;
         int nextPos = ((END_P + 1) < (a.size())) ? END_P + 1 : 0;
         int prevPos = ((START_P - 1) < 0) ? (a.size() - 1) : START_P - 1;
         int next = a[nextPos], prev = a[prevPos];
@@ -35,7 +33,7 @@ int main(int argc, char const *argv[])
         cout << "CUR: " << next << ' ' << VALUE << ' ' << prev << ' ';
         cout << "START = " << START_P << ' ' << "END = " << END_P << endl;
 
-        if (next == prev && VALUE == next)
+        if (next == prev && VALUE == next && nextPos != prevPos)
         {
             // cout << "EXPAND BOTH" << endl;
             START_P = prevPos;
@@ -59,18 +57,6 @@ int main(int argc, char const *argv[])
             STOP_LOOP = true;
         }
     }
-
-    if (VALUE == t + a.size() - 1)
-    {
-        cout << 1 << endl;
-    }
-    else if (VALUE == t && END_P == START_P)
-    {
-        cout << a.size() << endl;
-    }
-    else
-    {
-        cout << max(START_P, END_P) - min(START_P, END_P) << endl;
-    }
+    cout << a.size() - (VALUE - t) << endl;
     return 0;
 }
