@@ -3,11 +3,12 @@ using namespace std;
 
 vector<vector<pair<int, int>>> g;
 
+const int INF = 2000000001;
+
 struct edge
 {
     int from, to, cost;
 };
-
 
 int main(int argc, char const *argv[])
 {
@@ -26,14 +27,16 @@ int main(int argc, char const *argv[])
         g[s].push_back({f, x});
         g[f].push_back({s, x});
         edges.push_back({s, f, x});
+        edges.push_back({f, s, x});
     }
 
     int START, FINISH;
     cin >> START >> FINISH;
-    START--; FINISH--;
+    START--;
+    FINISH--;
 
     set<pair<int, int>> s1;
-    vector<int> dist1(n);
+    vector<int> dist1(n, INF);
     s1.insert({0, START});
     dist1[START] = 0;
     while (!s1.empty())
@@ -43,7 +46,7 @@ int main(int argc, char const *argv[])
         for (auto path : g[u])
         {
             int to = path.first;
-            int ans =  max(dist1[u], path.second);
+            int ans = max(dist1[u], path.second);
             if (dist1[to] > ans)
             {
                 s1.erase({dist1[to], to});
@@ -53,9 +56,8 @@ int main(int argc, char const *argv[])
         }
     }
 
-
     set<pair<int, int>> s2;
-    vector<int> dist2(n);
+    vector<int> dist2(n, INF);
     s2.insert({0, FINISH});
     dist2[FINISH] = 0;
     while (!s2.empty())
@@ -65,7 +67,7 @@ int main(int argc, char const *argv[])
         for (auto path : g[u])
         {
             int to = path.first;
-            int ans =  max(dist2[u], path.second);
+            int ans = max(dist2[u], path.second);
             if (dist2[to] > ans)
             {
                 s2.erase({dist2[to], to});
@@ -75,12 +77,16 @@ int main(int argc, char const *argv[])
         }
     }
 
-    int ans = 0;
-    for (auto edge : edges) {
+    int ans = INF;
+    for (auto edge : edges)
+    {
         int path_from_start = dist1[edge.from];
         int path_from_end = dist2[edge.to];
-        int cur = max(path_from_end, path_from_start) + edge.cost;
-        ans = max(ans, cur);
+        if (edge.cost >= path_from_start && edge.cost >= path_from_end)
+        {
+            int cur = max(path_from_end, path_from_start) + edge.cost;
+            ans = min(ans, cur);
+        }
     }
 
     cout << ans << endl;
