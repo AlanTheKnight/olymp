@@ -3,6 +3,12 @@
 #include <set>
 using namespace std;
 
+#define FOR(var, n) for (size_t var = 0; (var) < (n); (var)++)
+[[maybe_unused]] typedef pair<int, int> pair_int;
+[[maybe_unused]] typedef vector<vector<int>> v_2d_int;
+[[maybe_unused]] typedef vector<vector<double>> v_2d_double;
+const int INF = 10000000;
+
 struct Edge
 {
     int tBegin, tEnd, dest;
@@ -29,58 +35,59 @@ int main()
     int n,           // Количество станций
         e,           // Целевая станция
         m,           // Количество поездов
-        len,         // Длина маршрута
         prevStation, // Предыдущая станция
         curStation,  // Текущая станция
         curTime,     // Текущее время
-        prevTime,    // Предыдущее время
-        i, j; // Переменные для циклов
+        prevTime;    // Предыдущее время
+
     cin >> n >> e >> m;
-    const int INF = 1e9 + 1;
     vector<vector<Edge>> graph(n + 1);
     vector<int> dist(n + 1, INF);
     vector<bool> isFinal(n + 1, false);
 
-    for (i = 0; i < m; ++i)
+    FOR(i, m)
     {
-        cin >> len >> prevStation >> prevTime;
-        for (j = 1; j < len; ++j)
+        int len;
+        cin >> len;
+        vector<pair<int, int>> temp(len);
+        FOR(j, len)
         {
-            cin >> curStation >> curTime;
-            graph[prevStation].push_back(Edge(prevTime, curTime, curStation));
+            cin >> temp[j].first >> temp[j].second;
+        }
+
+        FOR(j, len)
+        {
+            for (size_t k = j + 1; k < len; k++)
+            {
+                graph[temp[j].first].push_back(
+                    Edge(temp[j].second, temp[k].second, temp[k].first));
+            }
         }
     }
 
+    // printGraph(graph);
+
     dist[1] = 0;
+    set<pair<int, int>> q;
+    q.insert({1, 0});
 
-    while (true)
+    while (!q.empty())
     {
-        int minStation = -1;
-        int minTime = INF;
-        for (i = 1; i <= n; ++i)
-        {
-            if (dist[i] < minTime && !isFinal[i])
-            {
-                minTime = dist[i];
-                minStation = i;
-            }
-        }
+        auto cur = q.begin();
+        q.erase(q.begin());
+        int u = cur->first;
+        int t = cur->second; // Время прибытия на текущую станцию
 
-        if (minTime == INF)
-        {
-            break;
-        }
-
-        isFinal[minStation] = true;
-
-        for (Edge e : graph[minStation])
+        for (Edge e : graph[u])
         {
             // Можно отправиться на эту станцию
-            if (e.tBegin >= dist[minStation])
+            if (e.tBegin >= t)
             {
-                if (e.tEnd < dist[e.dest])
+                if (dist[e.dest] > e.tEnd)
                 {
+                    q.erase({e.dest, e.tEnd});
                     dist[e.dest] = e.tEnd;
+                    q.insert({e.dest, e.tEnd});
                 }
             }
         }
