@@ -3,4 +3,4 @@ project(competitive)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(competitive informatics/теория-графов/u.cpp)
+add_executable(competitive informatics/dijkstra/домой-на-электричках.cpp)
