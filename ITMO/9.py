@@ -1,13 +1,15 @@
 def main(n):
     d = 2
     while n > 0:
-        print(n, d)
         c = 0
+        if d > 20: break
+        print(n, d)
         while n % d == 0:
+            print(n, "//", d, " = ", n // d)
             c += 1
-            n = n // d
+            n //= d
         if c != 0:
-            yield d, c
+            print(d, c)
         d += 1
 
 

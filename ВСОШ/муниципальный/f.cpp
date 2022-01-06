@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <numeric>
 #include <set>
+#include <climits>
 
 #define ll long long
 
@@ -21,7 +22,7 @@ ll count_zeros(vector<ll> &nums, ll k)
     ll start = 0;
     ll count = 0;
     ll count2 = 0;
-    ll minimal = 10000000;
+    ll minimal = LONG_LONG_MAX - 1;
     for (ll end = 0; end < nums.size(); end++)
     {
         if (nums[end] == 0)
