@@ -1,1 +1,1 @@
-<img src="readme/tink-algo.png" width="100%"/>
+<img src="tink-algo.png" width="100%"/>
