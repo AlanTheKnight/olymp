@@ -1,0 +1,3 @@
+[submodule "src/kotech"]
+	path = src/kotech
+	url = https://github.com/fm-projects/kotech
