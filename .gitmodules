@@ -1,3 +1,6 @@
 [submodule "src/kotech"]
 	path = src/kotech
 	url = https://github.com/fm-projects/kotech
+[submodule "src/NTO"]
+	path = src/NTO
+	url = https://github.com/remgus/NTO
